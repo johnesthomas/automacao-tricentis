@@ -2,6 +2,7 @@ package automacao.tc03;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterAll;
@@ -17,22 +18,24 @@ class AutomacaoTricentisTest {
 	static AutomacaoTricentis config;
 	static WebDriver driver;
 	static WebElement element;
+	static TC003_001_1_Abrir_Website abrir;
+	static PrintScreen capturaTela = new PrintScreen();
+	
 
 	@BeforeAll
 	public static void init() {
 		config = new AutomacaoTricentis();
 		driver = config.getWebDriver();
+		abrir = new TC003_001_1_Abrir_Website();
 	}
 
 	@Test
 	@DisplayName("TC003.001.1 - Abrir Website")
-	void testA() {
+	void testA() throws IOException {
 		String resultEsperado = "Tricentis Vehicle Insurance";
 		String resultAtual;
 
-		driver.get("http://sampleapp.tricentis.com/101/index.php");
-
-		resultAtual = driver.getTitle();
+		resultAtual = abrir.abrirSite(driver);						
 
 		assertEquals(resultEsperado, resultAtual, "Impossível Carregar Página!");
 
@@ -40,19 +43,21 @@ class AutomacaoTricentisTest {
 
 	@Test
 	@DisplayName("TC003.001.1.1 - Botão Motocycle")
-	void testB() {
+	void testB() throws IOException {
 
 		element = driver.findElement(By.id("nav_motorcycle"));
-		element.click();
+		element.click();		
 	}
 
 	@Test
 	@DisplayName("TC003.001.2 - Preencher os campos de “Enter Vehicle Data” com dados válidos e clicar no botão 'Next >>'")
-	void testC() {
+	void testC() throws IOException {
 
 		String resultEsperado = "0";
 		String resultAtual;
 		WebElement xPath;
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.id("make"));
 		element.click();
@@ -80,6 +85,8 @@ class AutomacaoTricentisTest {
 
 		element = driver.findElement(By.id("annualmileage"));
 		element.sendKeys("100");
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.id("nextenterinsurantdata"));
 		element.click();
@@ -92,11 +99,13 @@ class AutomacaoTricentisTest {
 
 	@Test
 	@DisplayName("TC003.001.3 - Preencher os campos de “Enter Insurant Data” com dados válidos e clicar no botão 'Next >>'")
-	void testD() {
+	void testD() throws IOException {
 
 		String resultEsperado = "0";
 		String resultAtual;
 		WebElement xPath;
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.id("firstname"));
 		element.sendKeys("Johnes");
@@ -129,6 +138,8 @@ class AutomacaoTricentisTest {
 
 		element = driver.findElement(By.xpath("//*[@id=\"insurance-form\"]/div/section[2]/div[10]/p/label[5]/span"));
 		element.click();
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.id("nextenterproductdata"));
 		element.click();
@@ -141,11 +152,13 @@ class AutomacaoTricentisTest {
 
 	@Test
 	@DisplayName("TC003.001.4 - Preencher os campos de “Enter Insurant Data” com dados válidos e clicar no botão 'Next >>'")
-	void testE() {
+	void testE() throws IOException {
 
 		String resultEsperado = "0";
 		String resultAtual;
 		WebElement xPath;
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.id("startdate"));
 		element.click();
@@ -160,6 +173,8 @@ class AutomacaoTricentisTest {
 
 		element = driver.findElement(By.xpath("//*[@id=\"insurance-form\"]/div/section[3]/div[4]/p/label[1]/span"));
 		element.click();
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.id("nextselectpriceoption"));
 		element.click();
@@ -172,11 +187,13 @@ class AutomacaoTricentisTest {
 
 	@Test
 	@DisplayName("TC003.001.5 - Selecionar uma das 4 opções de plano na etapa “Select Price Option” e clicar no botão 'Next >>'")
-	void testF() {
+	void testF() throws IOException {
 
 		String resultEsperado = "0";
 		String resultAtual;
 		WebElement xPath;
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.xpath("//*[@id=\"priceTable\"]/tfoot/tr/th[2]/label[4]/span"));
 		element.click();
@@ -184,6 +201,8 @@ class AutomacaoTricentisTest {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); // setar um tempo para que o proximo elemento
 																			// seja carregado (no caso o botão next)
 
+		capturaTela.takeScreenShot(driver);
+		
 		element = driver.findElement(By.id("nextsendquote"));
 		element.click();
 
@@ -195,11 +214,13 @@ class AutomacaoTricentisTest {
 
 	@Test
 	@DisplayName("TC003.001.6 - Preencher os campos de “Send Quote” com dados válidos e clicar no botão 'Next >>'")
-	void testG() {
+	void testG() throws IOException {
 
 		String resultEsperado = "Sending e-mail success!";
 		String resultAtual;
 		WebElement xPath;
+		
+		capturaTela.takeScreenShot(driver);
 
 		element = driver.findElement(By.id("email"));
 		element.sendKeys("johnes_brasil10@hotmail.com");
@@ -219,9 +240,11 @@ class AutomacaoTricentisTest {
 		element = driver.findElement(By.id("Comments"));
 		element.sendKeys("Hello Selenium!");
 
+		capturaTela.takeScreenShot(driver);
+		
 		element = driver.findElement(By.id("sendemail"));
 		element.click();
-
+		
 		xPath = element.findElement(By.xpath("/html/body/div[4]/h2"));
 		resultAtual = xPath.getText();
 
@@ -229,7 +252,9 @@ class AutomacaoTricentisTest {
 	}
 
 	@AfterAll
-	public static void terminate() throws InterruptedException {
+	public static void terminate() throws InterruptedException, IOException {
+		Thread.sleep(5000);
+		capturaTela.takeScreenShot(driver);
 		config.killAndCloseWebDriver();
 	}
 }
